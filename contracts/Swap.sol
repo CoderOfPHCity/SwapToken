@@ -1,19 +1,23 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8;
-import "@OpenZeppelin/contracts/token/ERC20/IERC20.sol";
+// import "@OpenZeppelin/contracts/token/ERC20/IERC20.sol";
+import "./TokenA.sol";
+import "./TokenB.sol";
 
 contract Swap {
-    address public tokenA;
-    address public tokenB;
+   
     uint256 public xchange;
+
+    TokenA public tokenA;
+    TokenB public tokenB;
 
     constructor(
         address _tokenA,
         address _tokenB,
         uint256 _xchange
     ) {
-        tokenA = _tokenA;
-        tokenB = _tokenB;
+        tokenA = TokenA(_tokenA);
+        tokenB = TokenB(_tokenB);
         xchange = _xchange;
     }
 
@@ -35,16 +39,16 @@ contract Swap {
 
     function swap(address token, uint256 _amount) public payFee( _amount, token) {
         require(_amount > 0, "Amount must be greater than zero");
-        if (token == tokenA) {
+        if (token == address(tokenA)) {
             _swapTokenA(_amount);
-        } else if (token == tokenB) {
+        } else if (token == address(tokenB)) {
             _swapTokenB(_amount);
         } else {
             revert("Invalid sender");
         }
     }
 
-    function _swapTokenA(uint256 _amount) internal {
+    function _swapTokenA(uint256 _amount) public {
         require(
             IERC20(tokenA).balanceOf(msg.sender) >= _amount,
             "Not enough TokenA balance"
@@ -65,7 +69,7 @@ contract Swap {
         );
     }
 
-    function _swapTokenB(uint256 _amount) internal {
+    function _swapTokenB(uint256 _amount) public {
         require(
             IERC20(tokenB).balanceOf(msg.sender) >= _amount,
             "Not enough TokenB balance"

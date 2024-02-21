@@ -1,5 +1,5 @@
 import {
-  time,
+
   loadFixture,
 } from "@nomicfoundation/hardhat-toolbox/network-helpers";
 import { expect } from "chai";
@@ -7,17 +7,33 @@ import { ethers } from "hardhat";
 
 describe("Lock", function () {
 
-  async function deployOneYearLockFixture() {
+  async function deploySwap() {
 
 
     const [owner, otherAccount] = await ethers.getSigners();
 
     const Swap = await ethers.getContractFactory("Swap");
-    const swap = await Swap.deploy(Swap);
+    const swap = await Swap.deploy("tokenA", "tokenB", "xchange ");
 
-    return { Swap,swap, owner, otherAccount };
+    return { swap, owner, otherAccount };
   }
-});
+
+ describe("Deployment", function () {
+     it("check if contract is deployed", async function () {
+       const { swap, owner } = await loadFixture(deploySwap);
+
+       expect;
+     });
+    }
+
+)});
+
+ 
+
+   
+    
+
+
 
 
 
